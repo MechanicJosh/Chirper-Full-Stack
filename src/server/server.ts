@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import './db/connection'; 
+import apiRouter from './routes';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -14,10 +16,10 @@ if (isProduction) {
 	app.use(express.static('public'));
 }
 
-// all our api routes
-app.get('/api/hello', (req, res) => {
-	res.json({ message: 'World' });
-});
+app.use(express.json());
+
+//all our api routes
+app.use('/api', apiRouter);
 
 // 404 fallback for client side routing
 if (isProduction) {
